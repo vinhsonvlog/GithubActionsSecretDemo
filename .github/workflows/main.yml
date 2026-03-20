@@ -1,0 +1,35 @@
+name: CI/CD Workflow  # Tên quy trình
+
+on:
+  push:
+    branches: ["main"]  # Chạy khi có code mới đẩy lên nhánh main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest  # Sử dụng máy ảo Ubuntu của GitHub
+
+    steps:
+      - name: Print greeting
+        run: echo "Hello HUTECH! Chào Vinh Sơn"  # Lời chào dành cho bạn
+
+      - name: Checkout code
+        uses: actions/checkout@v4  # Cập nhật lên v4 ổn định nhất hiện tại
+
+      - name: Read README file
+        run: cat README.md
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3 # Nên thêm cái này để build Docker hiệu quả hơn
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3  # Cập nhật lên v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6  # Cập nhật lên v6 mới nhất
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/duanjava:latest
