@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Nguyễn Trường Vinh Sơn</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            overflow: hidden;
+            perspective: 1000px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* ===== STARFIELD ===== */
+        .starfield {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* ===== 3D ROTATING RINGS ===== */
+        .rings-container {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            z-index: 1;
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border: 2px solid;
+            transform-style: preserve-3d;
+        }
+
+        .ring-1 {
+            width: 500px;
+            height: 500px;
+            margin-left: -250px;
+            margin-top: -250px;
+            border-color: rgba(0, 255, 255, 0.3);
+            animation: rotateRing1 8s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .ring-2 {
+            width: 450px;
+            height: 450px;
+            margin-left: -225px;
+            margin-top: -225px;
+            border-color: rgba(255, 0, 255, 0.3);
+            animation: rotateRing2 6s linear infinite;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2), inset 0 0 20px rgba(255, 0, 255, 0.1);
+        }
+
+        .ring-3 {
+            width: 400px;
+            height: 400px;
+            margin-left: -200px;
+            margin-top: -200px;
+            border-color: rgba(255, 255, 0, 0.3);
+            animation: rotateRing3 10s linear infinite;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.2), inset 0 0 20px rgba(255, 255, 0, 0.1);
+        }
+
+        .ring-4 {
+            width: 550px;
+            height: 550px;
+            margin-left: -275px;
+            margin-top: -275px;
+            border-color: rgba(0, 255, 100, 0.2);
+            animation: rotateRing4 12s linear infinite;
+            box-shadow: 0 0 15px rgba(0, 255, 100, 0.15);
+        }
+
+        /* Orbiting dots on rings */
+        .ring-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            top: -4px;
+            left: 50%;
+            margin-left: -4px;
+        }
+
+        .ring-1 .ring-dot {
+            background: #0ff;
+            box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
+        }
+
+        .ring-2 .ring-dot {
+            background: #f0f;
+            box-shadow: 0 0 15px #f0f, 0 0 30px #f0f;
+        }
+
+        .ring-3 .ring-dot {
+            background: #ff0;
+            box-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
+        }
+
+        @keyframes rotateRing1 {
+            0% { transform: rotateX(70deg) rotateZ(0deg); }
+            100% { transform: rotateX(70deg) rotateZ(360deg); }
+        }
+
+        @keyframes rotateRing2 {
+            0% { transform: rotateX(60deg) rotateY(30deg) rotateZ(0deg); }
+            100% { transform: rotateX(60deg) rotateY(30deg) rotateZ(-360deg); }
+        }
+
+        @keyframes rotateRing3 {
+            0% { transform: rotateX(50deg) rotateY(-40deg) rotateZ(0deg); }
+            100% { transform: rotateX(50deg) rotateY(-40deg) rotateZ(360deg); }
+        }
+
+        @keyframes rotateRing4 {
+            0% { transform: rotateX(80deg) rotateY(20deg) rotateZ(0deg); }
+            100% { transform: rotateX(80deg) rotateY(20deg) rotateZ(-360deg); }
+        }
+
+        /* ===== FLOATING 3D CUBES ===== */
+        .cube-container {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            transform-style: preserve-3d;
+            z-index: 1;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 1px solid;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .cube-container:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation: floatCube 15s ease-in-out infinite, rotateCube 8s linear infinite;
+        }
+        .cube-container:nth-child(1) .cube-face { border-color: rgba(0, 255, 255, 0.4); }
+
+        .cube-container:nth-child(2) {
+            top: 70%;
+            left: 85%;
+            animation: floatCube 12s ease-in-out infinite reverse, rotateCube 6s linear infinite reverse;
+        }
+        .cube-container:nth-child(2) .cube-face { border-color: rgba(255, 0, 255, 0.4); }
+
+        .cube-container:nth-child(3) {
+            top: 20%;
+            left: 80%;
+            animation: floatCube 18s ease-in-out infinite, rotateCube 10s linear infinite;
+        }
+        .cube-container:nth-child(3) .cube-face { border-color: rgba(255, 255, 0, 0.4); }
+
+        .cube-container:nth-child(4) {
+            top: 75%;
+            left: 10%;
+            animation: floatCube 14s ease-in-out infinite reverse, rotateCube 7s linear infinite;
+        }
+        .cube-container:nth-child(4) .cube-face { border-color: rgba(0, 255, 100, 0.4); }
+
+        .cube-container:nth-child(5) {
+            top: 40%;
+            left: 90%;
+            animation: floatCube 16s ease-in-out infinite, rotateCube 9s linear infinite reverse;
+        }
+        .cube-container:nth-child(5) .cube-face { border-color: rgba(255, 100, 0, 0.4); }
+
+        .cube-container:nth-child(6) {
+            top: 85%;
+            left: 50%;
+            animation: floatCube 13s ease-in-out infinite reverse, rotateCube 11s linear infinite;
+        }
+        .cube-container:nth-child(6) .cube-face { border-color: rgba(100, 100, 255, 0.4); }
+
+        .front  { transform: translateZ(20px); }
+        .back   { transform: translateZ(-20px) rotateY(180deg); }
+        .right  { transform: translateX(20px) rotateY(90deg); }
+        .left   { transform: translateX(-20px) rotateY(-90deg); }
+        .top    { transform: translateY(-20px) rotateX(90deg); }
+        .bottom { transform: translateY(20px) rotateX(-90deg); }
+
+        @keyframes floatCube {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-30px) translateX(15px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-40px) translateX(5px); }
+        }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            transform-style: preserve-3d;
+            animation: floatMain 6s ease-in-out infinite;
+        }
+
+        @keyframes floatMain {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-15px) rotateX(2deg) rotateY(-2deg); }
+            50% { transform: translateY(-5px) rotateX(-1deg) rotateY(1deg); }
+            75% { transform: translateY(-20px) rotateX(1deg) rotateY(-1deg); }
+        }
+
+        .greeting {
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 300;
+            animation: fadeSlideDown 1s ease-out 0.5s both;
+        }
+
+        .name-3d {
+            font-size: 4em;
+            font-weight: 900;
+            letter-spacing: 5px;
+            position: relative;
+            display: inline-block;
+            animation: fadeSlideUp 1s ease-out 1s both;
+        }
+
+        .name-3d .main-text {
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #ffff00, #00ff66, #00ffff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 3D Text Shadow Layers */
+        .name-3d .shadow-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .shadow-layer:nth-child(2) {
+            transform: translateZ(-1px) translateX(1px) translateY(1px);
+            -webkit-text-fill-color: rgba(255, 0, 255, 0.3);
+        }
+
+        .shadow-layer:nth-child(3) {
+            transform: translateZ(-2px) translateX(2px) translateY(2px);
+            -webkit-text-fill-color: rgba(0, 255, 255, 0.2);
+        }
+
+        .shadow-layer:nth-child(4) {
+            transform: translateZ(-3px) translateX(3px) translateY(3px);
+            -webkit-text-fill-color: rgba(255, 255, 0, 0.1);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Decorative lines */
+        .deco-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+            animation: fadeSlideUp 1s ease-out 1.5s both;
+        }
+
+        .deco-line .line {
+            height: 2px;
+            width: 100px;
+            background: linear-gradient(90deg, transparent, #0ff, transparent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .deco-line .diamond {
+            width: 12px;
+            height: 12px;
+            background: #0ff;
+            transform: rotate(45deg);
+            box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
+            animation: spinDiamond 3s linear infinite;
+        }
+
+        @keyframes spinDiamond {
+            0% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(225deg) scale(1.3); box-shadow: 0 0 25px #f0f, 0 0 50px #f0f; background: #f0f; }
+            100% { transform: rotate(405deg) scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; width: 100px; }
+            50% { opacity: 1; width: 150px; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 8px;
+            animation: fadeSlideUp 1s ease-out 2s both, glitchText 5s ease-in-out infinite 3s;
+        }
+
+        /* Holographic card effect */
+        .holo-card {
+            padding: 60px 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 255, 0.05), 
+                rgba(255, 0, 255, 0.05), 
+                rgba(0, 255, 255, 0.05));
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 40px rgba(0, 255, 255, 0.1),
+                0 0 80px rgba(255, 0, 255, 0.05),
+                inset 0 0 60px rgba(0, 255, 255, 0.03);
+            animation: holoShift 6s ease-in-out infinite, cardEntrance 1.5s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .holo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent,
+                rgba(0, 255, 255, 0.1),
+                transparent,
+                rgba(255, 0, 255, 0.1),
+                transparent
+            );
+            animation: rotateHolo 8s linear infinite;
+            z-index: -1;
+        }
+
+        .holo-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 4s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateHolo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        @keyframes holoShift {
+            0%, 100% { 
+                box-shadow: 0 0 40px rgba(0, 255, 255, 0.1), 0 0 80px rgba(255, 0, 255, 0.05);
+                border-color: rgba(0, 255, 255, 0.15);
+            }
+            33% { 
+                box-shadow: 0 0 40px rgba(255, 0, 255, 0.15), 0 0 80px rgba(255, 255, 0, 0.05);
+                border-color: rgba(255, 0, 255, 0.2);
+            }
+            66% { 
+                box-shadow: 0 0 40px rgba(255, 255, 0, 0.1), 0 0 80px rgba(0, 255, 255, 0.05);
+                border-color: rgba(255, 255, 0, 0.15);
+            }
+        }
+
+        @keyframes cardEntrance {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.5) rotateX(30deg) rotateY(-30deg); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1) rotateX(0) rotateY(0); 
+            }
+        }
+
+        @keyframes fadeSlideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glitchText {
+            0%, 90%, 100% { 
+                text-shadow: none;
+                transform: translateX(0);
+            }
+            92% { 
+                text-shadow: -2px 0 #f0f, 2px 0 #0ff;
+                transform: translateX(-2px);
+            }
+            94% { 
+                text-shadow: 2px 0 #f0f, -2px 0 #0ff;
+                transform: translateX(2px);
+            }
+            96% { 
+                text-shadow: -1px 0 #ff0, 1px 0 #0ff;
+                transform: translateX(-1px);
+            }
+        }
+
+        /* ===== GRID FLOOR ===== */
+        .grid-floor {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: 
+                linear-gradient(to top, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: bottom;
+            animation: gridScroll 3s linear infinite;
+            z-index: 0;
+            mask-image: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        }
+
+        @keyframes gridScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 60px; }
+        }
+
+        /* ===== ENERGY PARTICLES ===== */
+        .energy-particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .energy-particle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: particlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes particlePulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(2); opacity: 0.3; }
+        }
+
+        /* ===== FLOATING TRIANGLES ===== */
+        .triangle {
+            position: fixed;
+            width: 0;
+            height: 0;
+            z-index: 1;
+            opacity: 0.15;
+        }
+
+        .triangle:nth-child(1) {
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid #0ff;
+            top: 15%;
+            left: 15%;
+            animation: floatTriangle 20s ease-in-out infinite, rotateCube 15s linear infinite;
+        }
+
+        .triangle:nth-child(2) {
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 26px solid #f0f;
+            top: 65%;
+            right: 15%;
+            animation: floatTriangle 18s ease-in-out infinite reverse, rotateCube 12s linear infinite reverse;
+        }
+
+        .triangle:nth-child(3) {
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 43px solid #ff0;
+            top: 30%;
+            right: 8%;
+            animation: floatTriangle 22s ease-in-out infinite, rotateCube 18s linear infinite;
+        }
+
+        @keyframes floatTriangle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-40px) rotate(90deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            75% { transform: translateY(-50px) rotate(270deg); }
+        }
+
+        /* ===== SCAN LINE ===== */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
+            z-index: 20;
+            animation: scanDown 4s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes scanDown {
+            0% { top: -5%; }
+            100% { top: 105%; }
+        }
+
+        /* ===== CORNER DECORATIONS ===== */
+        .corner {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            z-index: 15;
+        }
+
+        .corner-tl {
+            top: 20px;
+            left: 20px;
+            border-top: 2px solid rgba(0, 255, 255, 0.4);
+            border-left: 2px solid rgba(0, 255, 255, 0.4);
+        }
+
+        .corner-tr {
+            top: 20px;
+            right: 20px;
+            border-top: 2px solid rgba(255, 0, 255, 0.4);
+            border-right: 2px solid rgba(255, 0, 255, 0.4);
+        }
+
+        .corner-bl {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 2px solid rgba(255, 255, 0, 0.4);
+            border-left: 2px solid rgba(255, 255, 0, 0.4);
+        }
+
+        .corner-br {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 2px solid rgba(0, 255, 100, 0.4);
+            border-right: 2px solid rgba(0, 255, 100, 0.4);
+        }
+
+        .corner::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .corner-tl::after { top: -3px; left: -3px; background: #0ff; box-shadow: 0 0 10px #0ff; }
+        .corner-tr::after { top: -3px; right: -3px; background: #f0f; box-shadow: 0 0 10px #f0f; }
+        .corner-bl::after { bottom: -3px; left: -3px; background: #ff0; box-shadow: 0 0 10px #ff0; }
+        .corner-br::after { bottom: -3px; right: -3px; background: #0f6; box-shadow: 0 0 10px #0f6; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .name-3d { font-size: 2em; }
+            .greeting { font-size: 1em; letter-spacing: 8px; }
+            .holo-card { padding: 40px 30px; }
+            .rings-container { width: 350px; height: 350px; }
+            .ring-1 { width: 300px; height: 300px; margin-left: -150px; margin-top: -150px; }
+            .ring-2 { width: 270px; height: 270px; margin-left: -135px; margin-top: -135px; }
+            .ring-3 { width: 240px; height: 240px; margin-left: -120px; margin-top: -120px; }
+            .ring-4 { width: 330px; height: 330px; margin-left: -165px; margin-top: -165px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scan Line -->
+    <div class="scanline"></div>
+
+    <!-- Corner Decorations -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- Grid Floor -->
+    <div class="grid-floor"></div>
+
+    <!-- Floating Triangles -->
+    <div class="triangle"></div>
+    <div class="triangle"></div>
+    <div class="triangle"></div>
+
+    <!-- 3D Rotating Rings -->
+    <div class="rings-container">
+        <div class="ring ring-1"><div class="ring-dot"></div></div>
+        <div class="ring ring-2"><div class="ring-dot"></div></div>
+        <div class="ring ring-3"><div class="ring-dot"></div></div>
+        <div class="ring ring-4"></div>
+    </div>
+
+    <!-- Floating 3D Cubes -->
+    <div class="cube-container">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+    </div>
+    <div class="cube-container">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+    </div>
+    <div class="cube-container">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+    </div>
+    <div class="cube-container">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+    </div>
+    <div class="cube-container">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+    </div>
+    <div class="cube-container">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="holo-card" id="holoCard">
+            <div class="greeting">XIN CHÀO</div>
+            <div class="name-3d">
+                <span class="main-text">Nguyễn Trường Vinh Sơn</span>
+                <span class="shadow-layer" aria-hidden="true">Nguyễn Trường Vinh Sơn</span>
+                <span class="shadow-layer" aria-hidden="true">Nguyễn Trường Vinh Sơn</span>
+                <span class="shadow-layer" aria-hidden="true">Nguyễn Trường Vinh Sơn</span>
+            </div>
+            <div class="deco-line">
+                <div class="line"></div>
+                <div class="diamond"></div>
+                <div class="line"></div>
+            </div>
+            <div class="subtitle">WELCOME TO MY WORLD</div>
+        </div>
+    </div>
+
+    <script>
+        // ===== STARFIELD GENERATOR =====
+        const starfield = document.createElement('div');
+        starfield.className = 'starfield';
+        document.body.appendChild(starfield);
+
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            star.style.animationDelay = Math.random() * 5 + 's';
+            starfield.appendChild(star);
+        }
+
+        // ===== ENERGY PARTICLES =====
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'energy-particle';
+            const size = Math.random() * 4 + 2;
+            const colors = ['#0ff', '#f0f', '#ff0', '#0f6', '#f60'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.background = color;
+            particle.style.boxShadow = `0 0 ${size * 3}px ${color}`;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+
+            const duration = Math.random() * 20 + 15;
+            const xRange = Math.random() * 300 - 150;
+            const yRange = Math.random() * 300 - 150;
+
+            particle.animate([
+                { transform: 'translate(0, 0)', opacity: 0.8 },
+                { transform: `translate(${xRange / 2}px, ${yRange / 2}px)`, opacity: 0.3 },
+                { transform: `translate(${-xRange / 3}px, ${-yRange / 3}px)`, opacity: 0.9 },
+                { transform: `translate(${xRange}px, ${yRange}px)`, opacity: 0.5 },
+                { transform: 'translate(0, 0)', opacity: 0.8 },
+            ], {
+                duration: duration * 1000,
+                iterations: Infinity,
+                easing: 'ease-in-out',
+            });
+
+            document.body.appendChild(particle);
+        }
+
+        // ===== 3D TILT EFFECT ON CARD =====
+        const card = document.getElementById('holoCard');
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
+
+        // ===== SHOOTING STARS =====
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.style.position = 'fixed';
+            star.style.width = Math.random() * 100 + 50 + 'px';
+            star.style.height = '1px';
+            star.style.background = 'linear-gradient(90deg, transparent, #fff, transparent)';
+            star.style.top = Math.random() * 50 + '%';
+            star.style.left = '-10%';
+            star.style.zIndex = '1';
+            star.style.borderRadius = '50%';
+            star.style.opacity = '0.6';
+            document.body.appendChild(star);
+
+            star.animate([
+                { transform: 'translateX(0) translateY(0)', opacity: 0 },
+                { opacity: 0.8, offset: 0.1 },
+                { transform: `translateX(${window.innerWidth + 200}px) translateY(${Math.random() * 200}px)`, opacity: 0 },
+            ], {
+                duration: 1500,
+                easing: 'ease-in',
+            }).onfinish = () => star.remove();
+        }
+
+        setInterval(createShootingStar, 3000);
+        setTimeout(createShootingStar, 500);
+    </script>
+</body>
+</html>
