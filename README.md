@@ -81,7 +81,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/my-app:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/duanjava:latest
 ```
 
 ## 5. Kết luận
